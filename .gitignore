@@ -12,6 +12,6 @@
 hs_err_pid*
 
 swagger.jersey.demo/.classpath
-swagger.jersey.demo/.gitignore
 swagger.jersey.demo/.project
-swagger.jersey.demo/.settings
+swagger.jersey.demo/.gitignore
+swagger.jersey.demo/.settings/
