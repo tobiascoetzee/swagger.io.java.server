@@ -1,11 +1,15 @@
 package com.tobiascode;
 
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
+@ApiModel( value = "Movie", description = "All the details about a movie" )
 public class Movie {
-	private int id;
-	private String title;
-	private String director;
-	private String synopsis;
-	private String yearOfRelease;
+	@ApiModelProperty( value = "Movie's id")private int id;
+	@ApiModelProperty( value = "Title of the movie")private String title;
+	@ApiModelProperty( value = "Who directed the movie")private String director;
+	@ApiModelProperty( value = "Short description about the movie")private String synopsis;
+	@ApiModelProperty( value = "Year it was released")private String yearOfRelease;
 
 	public Movie() {
 	}

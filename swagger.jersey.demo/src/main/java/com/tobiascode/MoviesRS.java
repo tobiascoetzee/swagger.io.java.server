@@ -14,7 +14,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 @Path("movies")
+@Api(value = "/movies")
 public class MoviesRS {
 	private static List<Movie> allMovies;
 
@@ -28,6 +35,7 @@ public class MoviesRS {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Returns all movies", response = Movie.class, responseContainer = "List")
 	public Response getMovieList() {
 		GenericEntity<List<Movie>> entity = new GenericEntity<List<Movie>>(
 				getAllMovies()) {
@@ -39,7 +47,11 @@ public class MoviesRS {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getMovieById(@PathParam("id") int id) {
+	@ApiOperation(value = "Returns a single movie for an id", notes ="You have to supply a valid id.", response = Movie.class)
+	@ApiResponses({
+		@ApiResponse(code = 404, message = "No movie with the given id exists.")
+	})
+	public Response getMovieById(@ApiParam(value = "Id of the movie to return")@PathParam("id") int id) {
 		Movie foundMovie = findMovieById(id);
 
 		if (foundMovie == null) {
@@ -52,11 +64,15 @@ public class MoviesRS {
 	@POST
 	@Path("/create")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response create(@FormParam("id") int id,
-			@FormParam("title") String title,
-			@FormParam("director") String director,
-			@FormParam("synopsis") String synopsis,
-			@FormParam("yearOfRelease") String yearOfRelease) {
+	@ApiOperation(value="Create a new movie.", notes="Cannot reuse an existing id.")
+	@ApiResponses({
+		@ApiResponse(code = 405, message = "Cannot add a new movie with an existing id.")
+	})	
+	public Response create(@ApiParam(value = "Movie's id")@FormParam("id") int id,
+			@ApiParam(value = "Title of the movie")@FormParam("title") String title,
+			@ApiParam(value = "Who directed the movie")@FormParam("director") String director,
+			@ApiParam(value = "Short description about the movie")@FormParam("synopsis") String synopsis,
+			@ApiParam(value = "Year it was released")@FormParam("yearOfRelease") String yearOfRelease) {
 		List<Movie> movies = getAllMovies();
 
 		Movie existingMovie = findMovieById(id);
