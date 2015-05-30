@@ -17,3 +17,15 @@ swagger.jersey.demo/.gitignore
 swagger.jersey.demo/.settings/
 clients/csharp/bin/io.swagger.client.dll
 clients/csharp/bin/io.swagger.client.xml
+clientimpl/csharp/CSharp.v12.suo
+clientimpl/csharp/MovieApiClient/bin/
+clientimpl/csharp/MovieApiClient/obj/
+clientimpl/csharp/packages/
+*.classpath
+clientimpl/java/.gitignore
+*.project
+*.settings/org.eclipse.jdt.core.prefs
+clientimpl/java/.settings/org.eclipse.jdt.core.prefs
+clientimpl/java/.settings/org.eclipse.m2e.core.prefs
+java/swagger.jersey.demo/.settings/org.eclipse.wst.common.component
+java/swagger.jersey.demo/.gitignore
