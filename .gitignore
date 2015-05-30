@@ -15,3 +15,5 @@ swagger.jersey.demo/.classpath
 swagger.jersey.demo/.project
 swagger.jersey.demo/.gitignore
 swagger.jersey.demo/.settings/
+clients/csharp/bin/io.swagger.client.dll
+clients/csharp/bin/io.swagger.client.xml
