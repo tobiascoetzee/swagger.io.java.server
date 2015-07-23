@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>com.wordnik</groupId>
 			<artifactId>swagger-jersey2-jaxrs</artifactId>
-			<version>1.5.2-M2</version>
+			<version>1.5.1-M2</version>
 		</dependency>
 	</dependencies>
 	<properties>
