@@ -66,7 +66,7 @@ public class MoviesRS {
 	@Produces(MediaType.TEXT_PLAIN)
 	@ApiOperation(value="Create a new movie.", notes="Cannot reuse an existing id.")
 	@ApiResponses({
-		@ApiResponse(code = 405, message = "Cannot add a new movie with an existing id.")
+		@ApiResponse(code = 400, message = "Cannot add a new movie with an existing id.")
 	})	
 	public Response create(@ApiParam(value = "Movie's id")@FormParam("id") int id,
 			@ApiParam(value = "Title of the movie")@FormParam("title") String title,
