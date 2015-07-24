@@ -49,9 +49,9 @@
 			<artifactId>jersey-media-moxy</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.wordnik</groupId>
+			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jersey2-jaxrs</artifactId>
-			<version>1.5.1-M2</version>
+			<version>1.5.0</version>
 		</dependency>
 	</dependencies>
 	<properties>
