@@ -29,3 +29,5 @@ clientimpl/java/.settings/org.eclipse.jdt.core.prefs
 clientimpl/java/.settings/org.eclipse.m2e.core.prefs
 java/swagger.jersey.demo/.settings/org.eclipse.wst.common.component
 java/swagger.jersey.demo/.gitignore
+.idea/
+*.iml
