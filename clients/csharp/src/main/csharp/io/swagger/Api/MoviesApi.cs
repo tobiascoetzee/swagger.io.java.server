@@ -1,231 +1,343 @@
 using System;
 using System.Collections.Generic;
-using io.swagger.client;
-using io.swagger.Model;
+using System.Threading.Tasks;
+using RestSharp;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
 
-namespace io.swagger.Api {
+namespace IO.Swagger.Api {
   
-  public class MoviesApi {
-    string basePath;
-    private readonly ApiInvoker apiInvoker = ApiInvoker.GetInstance();
 
-    public MoviesApi(String basePath = "http://localhost:8080/swagger.jersey.demo/webapi")
-    {
-      this.basePath = basePath;
-    }
-
-    public ApiInvoker getInvoker() {
-      return apiInvoker;
-    }
-
-    // Sets the endpoint base url for the services being accessed
-    public void setBasePath(string basePath) {
-      this.basePath = basePath;
-    }
-
-    // Gets the endpoint base url for the services being accessed
-    public String getBasePath() {
-      return basePath;
-    }
-
+  public interface IMoviesApi {
     
+    /// <summary>
+    /// Returns all movies 
+    /// </summary>
+    
+    /// <returns>List<Movie></returns>
+    List<Movie> GetMovieList ();
 
     /// <summary>
     /// Returns all movies 
     /// </summary>
     
-    /// <returns></returns>
-    public List<Movie>  getMovieList () {
-      // create path and map variables
-      var path = "/movies".Replace("{format}","json");
-
-      // query params
-      var queryParams = new Dictionary<String, String>();
-      var headerParams = new Dictionary<String, String>();
-      var formParams = new Dictionary<String, object>();
-
-      
-
-      
-
-      
-
-      
-
-      try {
-        if (typeof(List<Movie>) == typeof(byte[])) {
-          
-          var response = apiInvoker.invokeBinaryAPI(basePath, path, "GET", queryParams, null, headerParams, formParams);
-          return ((object)response) as List<Movie>;
-          
-          
-        } else {
-          
-          var response = apiInvoker.invokeAPI(basePath, path, "GET", queryParams, null, headerParams, formParams);
-          if (response != null){
-             return (List<Movie>) ApiInvoker.deserialize(response, typeof(List<Movie>));
-          }
-          else {
-            return null;
-          }
-          
-          
-        }
-      } catch (ApiException ex) {
-        if(ex.ErrorCode == 404) {
-          return null;
-        }
-        else {
-          throw ex;
-        }
-      }
-    }
+    /// <returns>List<Movie></returns>
+    Task<List<Movie>> GetMovieListAsync ();
     
+    /// <summary>
+    /// Create a new movie. Cannot reuse an existing id.
+    /// </summary>
+    /// <param name="Id">Movie&#39;s id</param>/// <param name="Title">Title of the movie</param>/// <param name="Director">Who directed the movie</param>/// <param name="Synopsis">Short description about the movie</param>/// <param name="YearOfRelease">Year it was released</param>
+    /// <returns></returns>
+    void Create (int? Id, string Title, string Director, string Synopsis, string YearOfRelease);
 
     /// <summary>
     /// Create a new movie. Cannot reuse an existing id.
     /// </summary>
-    /// <param name="Id">Movie&#39;s id</param>
-     /// <param name="Title">Title of the movie</param>
-     /// <param name="Director">Who directed the movie</param>
-     /// <param name="Synopsis">Short description about the movie</param>
-     /// <param name="YearOfRelease">Year it was released</param>
-    
+    /// <param name="Id">Movie&#39;s id</param>/// <param name="Title">Title of the movie</param>/// <param name="Director">Who directed the movie</param>/// <param name="Synopsis">Short description about the movie</param>/// <param name="YearOfRelease">Year it was released</param>
     /// <returns></returns>
-    public void  create (int? Id, string Title, string Director, string Synopsis, string YearOfRelease) {
-      // create path and map variables
-      var path = "/movies/create".Replace("{format}","json");
-
-      // query params
-      var queryParams = new Dictionary<String, String>();
-      var headerParams = new Dictionary<String, String>();
-      var formParams = new Dictionary<String, object>();
-
-      
-
-      
-
-      
-
-      if (Id != null){
-        if(Id is byte[]) {
-          formParams.Add("id", Id);
-        } else {
-          string paramStr = (Id is DateTime) ? ((DateTime)(object)Id).ToString("u") : Convert.ToString(Id);
-          formParams.Add("id", paramStr);
-        }
-      }
-      if (Title != null){
-        if(Title is byte[]) {
-          formParams.Add("title", Title);
-        } else {
-          string paramStr = (Title is DateTime) ? ((DateTime)(object)Title).ToString("u") : Convert.ToString(Title);
-          formParams.Add("title", paramStr);
-        }
-      }
-      if (Director != null){
-        if(Director is byte[]) {
-          formParams.Add("director", Director);
-        } else {
-          string paramStr = (Director is DateTime) ? ((DateTime)(object)Director).ToString("u") : Convert.ToString(Director);
-          formParams.Add("director", paramStr);
-        }
-      }
-      if (Synopsis != null){
-        if(Synopsis is byte[]) {
-          formParams.Add("synopsis", Synopsis);
-        } else {
-          string paramStr = (Synopsis is DateTime) ? ((DateTime)(object)Synopsis).ToString("u") : Convert.ToString(Synopsis);
-          formParams.Add("synopsis", paramStr);
-        }
-      }
-      if (YearOfRelease != null){
-        if(YearOfRelease is byte[]) {
-          formParams.Add("yearOfRelease", YearOfRelease);
-        } else {
-          string paramStr = (YearOfRelease is DateTime) ? ((DateTime)(object)YearOfRelease).ToString("u") : Convert.ToString(YearOfRelease);
-          formParams.Add("yearOfRelease", paramStr);
-        }
-      }
-      
-
-      try {
-        if (typeof(void) == typeof(byte[])) {
-          
-          
-          apiInvoker.invokeBinaryAPI(basePath, path, "GET", queryParams, null, headerParams, formParams);
-          return;
-          
-        } else {
-          
-          
-          apiInvoker.invokeAPI(basePath, path, "POST", queryParams, null, headerParams, formParams);
-          return;
-          
-        }
-      } catch (ApiException ex) {
-        if(ex.ErrorCode == 404) {
-          return ;
-        }
-        else {
-          throw ex;
-        }
-      }
-    }
+    Task CreateAsync (int? Id, string Title, string Director, string Synopsis, string YearOfRelease);
     
+    /// <summary>
+    /// Returns a single movie for an id You have to supply a valid id.
+    /// </summary>
+    /// <param name="Id">Id of the movie to return</param>
+    /// <returns>Movie</returns>
+    Movie GetMovieById (int? Id);
 
     /// <summary>
     /// Returns a single movie for an id You have to supply a valid id.
     /// </summary>
     /// <param name="Id">Id of the movie to return</param>
-    
-    /// <returns></returns>
-    public Movie  getMovieById (int? Id) {
-      // create path and map variables
-      var path = "/movies/{id}".Replace("{format}","json").Replace("{" + "id" + "}", apiInvoker.escapeString(Id.ToString()));
-
-      // query params
-      var queryParams = new Dictionary<String, String>();
-      var headerParams = new Dictionary<String, String>();
-      var formParams = new Dictionary<String, object>();
-
-      
-
-      
-
-      
-
-      
-
-      try {
-        if (typeof(Movie) == typeof(byte[])) {
-          
-          var response = apiInvoker.invokeBinaryAPI(basePath, path, "GET", queryParams, null, headerParams, formParams);
-          return ((object)response) as Movie;
-          
-          
-        } else {
-          
-          var response = apiInvoker.invokeAPI(basePath, path, "GET", queryParams, null, headerParams, formParams);
-          if (response != null){
-             return (Movie) ApiInvoker.deserialize(response, typeof(Movie));
-          }
-          else {
-            return null;
-          }
-          
-          
-        }
-      } catch (ApiException ex) {
-        if(ex.ErrorCode == 404) {
-          return null;
-        }
-        else {
-          throw ex;
-        }
-      }
-    }
+    /// <returns>Movie</returns>
+    Task<Movie> GetMovieByIdAsync (int? Id);
     
   }
+
+  /// <summary>
+  /// Represents a collection of functions to interact with the API endpoints
+  /// </summary>
+  public class MoviesApi : IMoviesApi {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MoviesApi"/> class.
+    /// </summary>
+    /// <param name="apiClient"> an instance of ApiClient (optional)
+    /// <returns></returns>
+    public MoviesApi(ApiClient apiClient = null) {
+      if (apiClient == null) { // use the default one in Configuration
+        this.apiClient = Configuration.apiClient; 
+      } else {
+        this.apiClient = apiClient;
+      }
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MoviesApi"/> class.
+    /// </summary>
+    /// <returns></returns>
+    public MoviesApi(String basePath)
+    {
+      this.apiClient = new ApiClient(basePath);
+    }
+
+    /// <summary>
+    /// Sets the base path of the API client.
+    /// </summary>
+    /// <value>The base path</value>
+    public void SetBasePath(String basePath) {
+      this.apiClient.basePath = basePath;
+    }
+
+    /// <summary>
+    /// Gets the base path of the API client.
+    /// </summary>
+    /// <value>The base path</value>
+    public String GetBasePath(String basePath) {
+      return this.apiClient.basePath;
+    }
+
+    /// <summary>
+    /// Gets or sets the API client.
+    /// </summary>
+    /// <value>The API client</value>
+    public ApiClient apiClient {get; set;}
+
+
+    
+    /// <summary>
+    /// Returns all movies 
+    /// </summary>
+    
+    /// <returns>List<Movie></returns>
+    public List<Movie> GetMovieList () {
+
+      
+
+      var path = "/movies";
+      path = path.Replace("{format}", "json");
+      
+
+      var queryParams = new Dictionary<String, String>();
+      var headerParams = new Dictionary<String, String>();
+      var formParams = new Dictionary<String, String>();
+      var fileParams = new Dictionary<String, String>();
+      String postBody = null;
+
+      
+      
+      
+      
+
+      // authentication setting, if any
+      String[] authSettings = new String[] {  };
+
+      // make the HTTP request
+      IRestResponse response = (IRestResponse) apiClient.CallApi(path, Method.GET, queryParams, postBody, headerParams, formParams, fileParams, authSettings);
+
+      if (((int)response.StatusCode) >= 400) {
+        throw new ApiException ((int)response.StatusCode, "Error calling GetMovieList: " + response.Content, response.Content);
+      }
+      return (List<Movie>) apiClient.Deserialize(response.Content, typeof(List<Movie>));
+    }
+	
+	 /// <summary>
+    /// Returns all movies 
+    /// </summary>
+    
+    /// <returns>List<Movie></returns>
+    public async Task<List<Movie>> GetMovieListAsync () {
+
+      
+
+      var path = "/movies";
+      path = path.Replace("{format}", "json");
+      
+
+      var queryParams = new Dictionary<String, String>();
+      var headerParams = new Dictionary<String, String>();
+      var formParams = new Dictionary<String, String>();
+      var fileParams = new Dictionary<String, String>();
+      String postBody = null;
+
+      
+      
+      
+      
+
+      // authentication setting, if any
+      String[] authSettings = new String[] {  };
+
+      // make the HTTP request
+      IRestResponse response = (IRestResponse) await apiClient.CallApiAsync(path, Method.GET, queryParams, postBody, headerParams, formParams, fileParams, authSettings);
+      if (((int)response.StatusCode) >= 400) {
+        throw new ApiException ((int)response.StatusCode, "Error calling GetMovieList: " + response.Content, response.Content);
+      }
+      return (List<Movie>) apiClient.Deserialize(response.Content, typeof(List<Movie>));
+    }
+    
+    /// <summary>
+    /// Create a new movie. Cannot reuse an existing id.
+    /// </summary>
+    /// <param name="Id">Movie&#39;s id</param>/// <param name="Title">Title of the movie</param>/// <param name="Director">Who directed the movie</param>/// <param name="Synopsis">Short description about the movie</param>/// <param name="YearOfRelease">Year it was released</param>
+    /// <returns></returns>
+    public void Create (int? Id, string Title, string Director, string Synopsis, string YearOfRelease) {
+
+      
+
+      var path = "/movies/create";
+      path = path.Replace("{format}", "json");
+      
+
+      var queryParams = new Dictionary<String, String>();
+      var headerParams = new Dictionary<String, String>();
+      var formParams = new Dictionary<String, String>();
+      var fileParams = new Dictionary<String, String>();
+      String postBody = null;
+
+      
+      
+      if (Id != null) formParams.Add("id", apiClient.ParameterToString(Id)); // form parameter
+      if (Title != null) formParams.Add("title", apiClient.ParameterToString(Title)); // form parameter
+      if (Director != null) formParams.Add("director", apiClient.ParameterToString(Director)); // form parameter
+      if (Synopsis != null) formParams.Add("synopsis", apiClient.ParameterToString(Synopsis)); // form parameter
+      if (YearOfRelease != null) formParams.Add("yearOfRelease", apiClient.ParameterToString(YearOfRelease)); // form parameter
+      
+      
+
+      // authentication setting, if any
+      String[] authSettings = new String[] {  };
+
+      // make the HTTP request
+      IRestResponse response = (IRestResponse) apiClient.CallApi(path, Method.POST, queryParams, postBody, headerParams, formParams, fileParams, authSettings);
+
+      if (((int)response.StatusCode) >= 400) {
+        throw new ApiException ((int)response.StatusCode, "Error calling Create: " + response.Content, response.Content);
+      }
+      
+      return;
+    }
+	
+	 /// <summary>
+    /// Create a new movie. Cannot reuse an existing id.
+    /// </summary>
+    /// <param name="Id">Movie&#39;s id</param>/// <param name="Title">Title of the movie</param>/// <param name="Director">Who directed the movie</param>/// <param name="Synopsis">Short description about the movie</param>/// <param name="YearOfRelease">Year it was released</param>
+    /// <returns></returns>
+    public async Task CreateAsync (int? Id, string Title, string Director, string Synopsis, string YearOfRelease) {
+
+      
+
+      var path = "/movies/create";
+      path = path.Replace("{format}", "json");
+      
+
+      var queryParams = new Dictionary<String, String>();
+      var headerParams = new Dictionary<String, String>();
+      var formParams = new Dictionary<String, String>();
+      var fileParams = new Dictionary<String, String>();
+      String postBody = null;
+
+      
+      
+      if (Id != null) formParams.Add("id", apiClient.ParameterToString(Id)); // form parameter
+      if (Title != null) formParams.Add("title", apiClient.ParameterToString(Title)); // form parameter
+      if (Director != null) formParams.Add("director", apiClient.ParameterToString(Director)); // form parameter
+      if (Synopsis != null) formParams.Add("synopsis", apiClient.ParameterToString(Synopsis)); // form parameter
+      if (YearOfRelease != null) formParams.Add("yearOfRelease", apiClient.ParameterToString(YearOfRelease)); // form parameter
+      
+      
+
+      // authentication setting, if any
+      String[] authSettings = new String[] {  };
+
+      // make the HTTP request
+      IRestResponse response = (IRestResponse) await apiClient.CallApiAsync(path, Method.POST, queryParams, postBody, headerParams, formParams, fileParams, authSettings);
+      if (((int)response.StatusCode) >= 400) {
+        throw new ApiException ((int)response.StatusCode, "Error calling Create: " + response.Content, response.Content);
+      }
+      
+      return;
+    }
+    
+    /// <summary>
+    /// Returns a single movie for an id You have to supply a valid id.
+    /// </summary>
+    /// <param name="Id">Id of the movie to return</param>
+    /// <returns>Movie</returns>
+    public Movie GetMovieById (int? Id) {
+
+      
+      // verify the required parameter 'Id' is set
+      if (Id == null) throw new ApiException(400, "Missing required parameter 'Id' when calling GetMovieById");
+      
+
+      var path = "/movies/{id}";
+      path = path.Replace("{format}", "json");
+      path = path.Replace("{" + "id" + "}", apiClient.ParameterToString(Id));
+      
+
+      var queryParams = new Dictionary<String, String>();
+      var headerParams = new Dictionary<String, String>();
+      var formParams = new Dictionary<String, String>();
+      var fileParams = new Dictionary<String, String>();
+      String postBody = null;
+
+      
+      
+      
+      
+
+      // authentication setting, if any
+      String[] authSettings = new String[] {  };
+
+      // make the HTTP request
+      IRestResponse response = (IRestResponse) apiClient.CallApi(path, Method.GET, queryParams, postBody, headerParams, formParams, fileParams, authSettings);
+
+      if (((int)response.StatusCode) >= 400) {
+        throw new ApiException ((int)response.StatusCode, "Error calling GetMovieById: " + response.Content, response.Content);
+      }
+      return (Movie) apiClient.Deserialize(response.Content, typeof(Movie));
+    }
+	
+	 /// <summary>
+    /// Returns a single movie for an id You have to supply a valid id.
+    /// </summary>
+    /// <param name="Id">Id of the movie to return</param>
+    /// <returns>Movie</returns>
+    public async Task<Movie> GetMovieByIdAsync (int? Id) {
+
+      
+          // verify the required parameter 'Id' is set
+          if (Id == null) throw new ApiException(400, "Missing required parameter 'Id' when calling GetMovieById");
+      
+
+      var path = "/movies/{id}";
+      path = path.Replace("{format}", "json");
+      path = path.Replace("{" + "id" + "}", apiClient.ParameterToString(Id));
+      
+
+      var queryParams = new Dictionary<String, String>();
+      var headerParams = new Dictionary<String, String>();
+      var formParams = new Dictionary<String, String>();
+      var fileParams = new Dictionary<String, String>();
+      String postBody = null;
+
+      
+      
+      
+      
+
+      // authentication setting, if any
+      String[] authSettings = new String[] {  };
+
+      // make the HTTP request
+      IRestResponse response = (IRestResponse) await apiClient.CallApiAsync(path, Method.GET, queryParams, postBody, headerParams, formParams, fileParams, authSettings);
+      if (((int)response.StatusCode) >= 400) {
+        throw new ApiException ((int)response.StatusCode, "Error calling GetMovieById: " + response.Content, response.Content);
+      }
+      return (Movie) apiClient.Deserialize(response.Content, typeof(Movie));
+    }
+    
+  }  
   
 }

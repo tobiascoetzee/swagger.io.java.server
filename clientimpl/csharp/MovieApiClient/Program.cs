@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using io.swagger.Api;
+using IO.Swagger.Api;
 
 namespace MovieApiClient
 {
@@ -14,7 +11,7 @@ namespace MovieApiClient
 
             Console.WriteLine("--- Show All Movies ---");
 
-            foreach (var movie in api.getMovieList())
+            foreach (var movie in api.GetMovieList())
             {
                 Console.WriteLine(movie);
             }
@@ -22,7 +19,7 @@ namespace MovieApiClient
 
             Console.WriteLine("--- Show Movie 2 ---");
 
-            Console.WriteLine(api.getMovieById(2));
+            Console.WriteLine(api.GetMovieById(2));
         }
     }
 }
